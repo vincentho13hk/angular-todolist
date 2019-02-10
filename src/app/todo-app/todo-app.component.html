@@ -1,0 +1,31 @@
+<header class="header">
+  <h1>Todos</h1>
+  <form class="todo-form" (ngSubmit)="addTodo()">
+      <input class="add-todo" [(ngModel)]="newTodo" name="first" placeholder="What needs to be done?" required="required" autocomplete="off">
+      <button type="submit" class="add-btn" *ngIf="newTodo.length">+</button>
+  </form>
+</header>
+<main class="main" *ngIf="todos.length">
+  <input class="toggle-all" type="checkbox" [(ngModel)]="allDone" (ngModelChange)="toggleAllTodoDone($event)">
+  <ul class="todo-list">
+      <li *ngFor="let todo of todos" [class.completed]="todo.done" (dblclick)="editingTodo(todo)">
+          <div class="view" *ngIf="!todo.edit">
+              <input class="toggle" type="checkbox" [checked]="todo.done" (click)="toggleDoneTodo(todo)">
+              <label>{{ todo.value }}</label>
+              <button class="destroy" (click)="destroyTodo(todo)"></button>
+          </div>
+          <input class="edit" *ngIf="todo.edit" appAfterViewFocus [value]="todo.value" #edit (blur)="cancelEditingTodo(todo)" placeholder="What do you need to write?" (keyup.enter)="editedTodo(todo, edit)">
+      </li>
+  </ul>
+</main>
+<footer class="footer" *ngIf="todos.length">
+  <span class="todo-count">
+  <strong>{{ todoCount }}</strong>
+  <span> items left</span>
+  </span>
+  <button class="clear-completed" (click)="destroyAllTodo()" [class.clear-operate]="clearCount">
+    <span>Clear </span>
+    <strong>{{ clearCount }}</strong>
+    <span> done items</span>
+  </button>
+</footer>
